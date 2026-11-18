@@ -10,3 +10,6 @@
 
 .takeaway{border-left:3px solid var(--lime);background:var(--panel);padding:16px 20px;border-radius:0 9px 9px 0;margin:22px 0;line-height:1.6}.reflection{margin-bottom:0}.frog{animation:hop 4s ease-in-out infinite}@keyframes hop{0%,65%,100%{transform:translateY(0) rotate(0)}80%{transform:translateY(-15px) rotate(-9deg)}}
 .cars .glyph{animation:cruise 5s ease-in-out infinite}@keyframes cruise{0%,100%{transform:translateX(-12px)}50%{transform:translateX(12px)}}
+@media (max-width: 530px) {
+  .top nav { flex-wrap: wrap; justify-content: flex-end; row-gap: 8px }
+}
