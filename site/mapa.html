@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Mapa interactivo con seis ramas sobre las actividades y los aprendizajes del semestre de negociación.">
+<title>Lo que aprendí negociando · Mapa interactivo</title>
+<style>
+:root {
+  color-scheme: light;
+  font-family: system-ui, sans-serif;
+  color: #222820;
+  background: #f5f3e9;
+}
+* { box-sizing: border-box }
+body { margin: 0 }
+.shell { max-width: 1180px; margin: auto; padding: 0 clamp(16px, 4vw, 48px) }
+a { color: #284b36; text-underline-offset: .23em }
+a:focus-visible, summary:focus-visible { outline: 3px solid #386944; outline-offset: 4px }
+header { border-bottom: 1px solid #d4d7c8; padding: 20px 0 }
+header a { font-weight: 700 }
+.intro { margin: clamp(32px, 7vw, 78px) 0 28px }
+.eyebrow { color: #375b45; font-weight: 750; letter-spacing: .12em; font-size: .75rem; text-transform: uppercase }
+h1 { font: 500 clamp(2.7rem, 7vw, 6rem)/.98 Georgia, serif; letter-spacing: -.06em; margin: 12px 0 }
+.intro p:last-child, footer { color: #4b5348; line-height: 1.6 }
+.map {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-areas: "a b c" "hub hub hub" "d e f";
+  position: relative;
+  align-items: start;
+}
+.hub { grid-area: hub; justify-self: center; text-align: center; color: #f8f6e8; background: #213b2d; border-radius: 18px; width: min(100%, 460px); padding: 19px; z-index: 1 }
+.hub h2 { font: 500 clamp(1.75rem, 4vw, 2.65rem)/1 Georgia, serif; margin: 0 }
+.hub p { margin: 8px 0 0; line-height: 1.45 }
+.branch {
+  --surface: #edf1e3;
+  --edge: #50734b;
+  background: var(--surface);
+  border: 1px solid var(--edge);
+  border-radius: 14px;
+  position: relative;
+}
+.branch:nth-of-type(1) { grid-area: a }
+.branch:nth-of-type(2) { grid-area: b; --surface: #fbefd9; --edge: #87632f }
+.branch:nth-of-type(3) { grid-area: c; --surface: #edf0fa; --edge: #5d6997 }
+.branch:nth-of-type(4) { grid-area: d; --surface: #fae9e8; --edge: #92565d }
+.branch:nth-of-type(5) { grid-area: e; --surface: #e3f1ed; --edge: #4a7569 }
+.branch:nth-of-type(6) { grid-area: f; --surface: #f2eafa; --edge: #785b8b }
+.map::before {
+  content: "";
+  position: absolute;
+  inset: 36px 16.666%;
+  background: repeating-linear-gradient(90deg, #9ba596 0 1px, transparent 1px 50%);
+  border-right: 1px solid #9ba596;
+  pointer-events: none;
+}
+summary { cursor: pointer }
+.branch > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 76px; padding: 15px; border-radius: 13px; font: 600 clamp(1.12rem, 2.3vw, 1.45rem)/1.1 Georgia, serif }
+summary::-webkit-details-marker { display: none }
+.branch > summary::after { content: "+"; color: var(--edge); font: 600 1.35rem/1 system-ui; flex: none }
+.branch[open] > summary::after { content: "−" }
+.branch > summary:hover { box-shadow: inset 0 0 0 2px var(--edge) }
+.branch-body { padding: 0 15px 16px; line-height: 1.55 }
+.branch[open] > .branch-body { animation: appear 180ms ease-out }
+@keyframes appear { from { opacity: .2; transform: translateY(-5px) } to { opacity: 1; transform: translateY(0) } }
+.branch-body h3 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; margin: 12px 0 4px }
+.branch-body p { margin: 0 }
+.question { margin-top: 15px; background: #fff9; padding: 10px; border-radius: 8px }
+.question summary { font-size: .87rem; font-weight: 700 }
+.question p { padding-top: 8px }
+footer { border-top: 1px solid #d4d7c8; margin-top: 35px; padding: 18px 0 30px; font-size: .88rem }
+footer p { margin: 4px 0 }
+@media(max-width: 730px) {
+  .map { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "hub hub" "a b" "c d" "e f" }
+  .map::before { display: none }
+}
+@media(max-width: 440px) {
+  .map { grid-template-columns: minmax(0, 1fr); grid-template-areas: "hub" "a" "b" "c" "d" "e" "f"; gap: 12px }
+  .branch > summary { min-height: 57px }
+}
+@media(prefers-reduced-motion: reduce) { .branch[open] > .branch-body { animation: none } }
+</style>
+</head>
+<body>
+<div class="shell">
+<header><a href="./">← Volver a la bitácora</a></header>
+<main>
+<section class="intro" aria-labelledby="titulo">
+<p class="eyebrow">Mapa interactivo · Bitácora de clase</p>
+<h1 id="titulo">Lo que aprendí negociando</h1>
+<p>Abre una rama para ver qué hicimos en clase, qué aprendí y las preguntas que quedaron bajo las portadas del mapa impreso.</p>
+</section>
+<section class="map" aria-labelledby="centro">
+<div class="hub"><h2 id="centro">Negociar</h2><p>Entender intereses · Decidir en conjunto · Crear valor</p></div>
+<details class="branch">
+<summary>El pantano</summary>
+<div class="branch-body">
+<h3>Qué hicimos</h3><p>Un reto superado en equipo nos daba una virtud. Si fallábamos, retrocedíamos un nivel. Con la virtud podíamos decidir cómo avanzar y si seguíamos juntos.</p>
+<h3>Qué aprendí</h3><p>Avanzar en grupo exige coordinar decisiones y tener en cuenta a quienes podrían quedarse atrás.</p>
+<details class="question"><summary>Abrir la portada</summary><p>¿Avanzamos por separado o usamos la virtud para seguir juntos?</p></details>
+</div>
+</details>
+<details class="branch">
+<summary>Venta de autos</summary>
+<div class="branch-body">
+<h3>Qué hicimos</h3><p>Cada país decidía si vendía autos. Sus ingresos o pérdidas dependían de lo que decidieran todos los países.</p>
+<h3>Qué aprendí</h3><p>Me conviene pensar en varios escenarios antes de decidir, porque mi resultado también depende de los demás.</p>
+<details class="question"><summary>Abrir la portada</summary><p>¿Qué cambiaría en mi decisión si los otros países eligen vender?</p></details>
+</div>
+</details>
+<details class="branch">
+<summary>Países y recursos</summary>
+<div class="branch-body">
+<h3>Qué hicimos</h3><p>Representamos países con recursos distintos. Debíamos reunir los de nuestra meta mediante negociaciones o decisiones de guerra dentro del juego.</p>
+<h3>Qué aprendí</h3><p>Aprendí a identificar qué necesitaba cada parte y a comparar un intercambio con el costo de romper la negociación.</p>
+<details class="question"><summary>Abrir la portada</summary><p>¿Qué puedo ofrecer a cambio de un recurso que necesito?</p></details>
+</div>
+</details>
+<details class="branch">
+<summary>El mito del pastel entero</summary>
+<div class="branch-body">
+<h3>Qué hicimos</h3><p>El taller preguntaba cómo comprar y repartir el pastel, qué prefería cada persona y si una porción igual era una porción equitativa.</p>
+<h3>Qué aprendí</h3><p>Preguntar por prioridades ayuda a encontrar repartos que respondan a necesidades distintas. Los ejercicios de los nueve puntos y el cuadrado pusieron a prueba mis supuestos.</p>
+</div>
+</details>
+<details class="branch">
+<summary>Dos formas de negociar</summary>
+<div class="branch-body">
+<h3>Qué trabajamos</h3><p>Pinkas Flint explica que una negociación puede combinar la distribución del valor disponible y la creación de valor mediante opciones de beneficio mutuo.</p>
+<h3>Qué aprendí</h3><p>Aprendí a distinguir lo que alguien pide de lo que necesita, fijar mi límite y comparar el acuerdo con mi mejor alternativa.</p>
+</div>
+</details>
+<details class="branch">
+<summary>¿Cómo negociamos?</summary>
+<div class="branch-body">
+<h3>Qué trabajamos</h3><p>El crucigrama sobre Colombia plantea temas como el regateo, el poder, la preparación y los estilos regionales de negociación.</p>
+<h3>Qué aprendí</h3><p>Conviene observar cómo negocia mi contraparte y preparar mis argumentos sin dar por hecho que todos negocian igual.</p>
+</div>
+</details>
+</section>
+</main>
+<footer>
+<p><strong>Materiales de clase</strong></p>
+<p><cite>El mito del pastel entero</cite> (Taller 3) · Pinkas Flint, <cite>La negociación empresarial</cite> (ESAN, 2004) · <cite>¿Cómo negocian los colombianos?</cite> (crucigrama).</p>
+</footer>
+</div>
+</body>
+</html>
