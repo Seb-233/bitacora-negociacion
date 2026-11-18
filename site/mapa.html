@@ -48,14 +48,6 @@ h1 { font: 500 clamp(2.7rem, 7vw, 6rem)/.98 Georgia, serif; letter-spacing: -.06
 .branch:nth-of-type(4) { grid-area: d; --surface: #fae9e8; --edge: #92565d }
 .branch:nth-of-type(5) { grid-area: e; --surface: #e3f1ed; --edge: #4a7569 }
 .branch:nth-of-type(6) { grid-area: f; --surface: #f2eafa; --edge: #785b8b }
-.map::before {
-  content: "";
-  position: absolute;
-  inset: 36px 16.666%;
-  background: repeating-linear-gradient(90deg, #9ba596 0 1px, transparent 1px 50%);
-  border-right: 1px solid #9ba596;
-  pointer-events: none;
-}
 summary { cursor: pointer }
 .branch > summary { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 76px; padding: 15px; border-radius: 13px; font: 600 clamp(1.12rem, 2.3vw, 1.45rem)/1.1 Georgia, serif }
 summary::-webkit-details-marker { display: none }
@@ -63,8 +55,6 @@ summary::-webkit-details-marker { display: none }
 .branch[open] > summary::after { content: "−" }
 .branch > summary:hover { box-shadow: inset 0 0 0 2px var(--edge) }
 .branch-body { padding: 0 15px 16px; line-height: 1.55 }
-.branch[open] > .branch-body { animation: appear 180ms ease-out }
-@keyframes appear { from { opacity: .2; transform: translateY(-5px) } to { opacity: 1; transform: translateY(0) } }
 .branch-body h3 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; margin: 12px 0 4px }
 .branch-body p { margin: 0 }
 .question { margin-top: 15px; background: #fff9; padding: 10px; border-radius: 8px }
@@ -81,6 +71,92 @@ footer p { margin: 4px 0 }
   .branch > summary { min-height: 57px }
 }
 @media(prefers-reduced-motion: reduce) { .branch[open] > .branch-body { animation: none } }
+:root {
+  background: radial-gradient(ellipse at 50% 10%, #fff9df, transparent 52%), #eaece0;
+}
+.intro { max-width: 760px }
+.map::before { display: none }
+.map {
+  gap: clamp(28px, 4vw, 55px) 24px;
+  isolation: isolate;
+  padding: 24px;
+  border: 1px solid #a6ad99;
+  border-radius: 28px;
+  background:
+    radial-gradient(ellipse at 50% 50%, #f9f7e8, transparent 58%),
+    radial-gradient(circle, #6d826350 1px, transparent 1.2px) 0 0 / 17px 17px,
+    #e5ebdd;
+  box-shadow: inset 0 1px 0 #fffc, 0 20px 48px #23342118;
+}
+.map-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none }
+.map-tools { display: flex; justify-content: flex-end; margin-bottom: 12px }
+.map-tools button {
+  font: 700 .88rem system-ui;
+  background: #f8f7ed;
+  color: #264031;
+  border: 1px solid #84967e;
+  border-radius: 99px;
+  padding: 9px 15px;
+  cursor: pointer;
+}
+.map-tools button:hover { background: #dbe8d3 }
+button:focus-visible { outline: 3px solid #386944; outline-offset: 4px }
+.hub {
+  width: min(100%, 410px);
+  background: radial-gradient(ellipse at 30% 10%, #487c56, #213b2d 76%);
+  border: 1px solid #487c56;
+  box-shadow: 0 5px 0 #142d20, 0 14px 25px #152d2046, inset 0 1px 0 #b6d5a670;
+}
+.branch {
+  z-index: 1;
+  transform: perspective(700px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transform-origin: 50% 38px;
+  background: linear-gradient(145deg, #fff9, transparent 70%), var(--surface);
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--edge) 38%, var(--surface)), 0 9px 18px #29442a22;
+  transition: transform 210ms ease-out, box-shadow 280ms ease;
+}
+.branch:nth-of-type(3n + 1) { --swing: -5deg }
+.branch:nth-of-type(3n + 2) { --swing: 3deg }
+.branch:nth-of-type(3n) { --swing: 5deg }
+.branch:hover, .branch:focus-within, .branch[open] {
+  box-shadow: 0 5px 0 color-mix(in srgb, var(--edge) 55%, var(--surface)), 0 13px 22px #29442a36;
+}
+.branch > summary::after {
+  display: grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  content: "⌄";
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  transition: transform 300ms cubic-bezier(.2,.75,.3,1.4);
+}
+.branch[open] > summary::after { content: "⌄"; transform: rotate(180deg) }
+.branch[open] > .branch-body {
+  transform-origin: 50% 0;
+  animation: branch-swing 380ms cubic-bezier(.25,.65,.3,1) both;
+}
+@keyframes branch-swing {
+  0% { opacity: 0; transform: perspective(650px) rotateX(-24deg) rotateZ(var(--swing)) scale(.95) }
+  70% { opacity: 1; transform: perspective(650px) rotateX(3deg) rotateZ(0) scale(1) }
+  100% { opacity: 1; transform: none }
+}
+.question[open] > p {
+  transform-origin: left top;
+  animation: branch-swing 340ms ease-out both;
+}
+@media (max-width: 730px) {
+  .map { gap: 22px 15px; padding: 16px }
+}
+@media (max-width: 440px) {
+  .map { padding-left: 26px }
+}
+@media (prefers-reduced-motion: reduce) {
+  .branch, .branch > summary::after { transform: none; transition: none }
+  .branch[open] > .branch-body, .question[open] > p { animation: none }
+}
+
+.map-tools[hidden] { display: none }
 </style>
 </head>
 <body>
@@ -92,7 +168,9 @@ footer p { margin: 4px 0 }
 <h1 id="titulo">Lo que aprendí negociando</h1>
 <p>Abre una rama para ver qué hicimos en clase, qué aprendí y las preguntas que quedaron bajo las portadas del mapa impreso.</p>
 </section>
-<section class="map" aria-labelledby="centro">
+<div class="map-tools" hidden><button type="button" aria-controls="ramas">Abrir todas las ramas</button></div>
+<section id="ramas" class="map" aria-labelledby="centro">
+<canvas class="map-links" aria-hidden="true"></canvas>
 <div class="hub"><h2 id="centro">Negociar</h2><p>Entender intereses · Decidir en conjunto · Crear valor</p></div>
 <details class="branch">
 <summary>El pantano</summary>
@@ -146,5 +224,116 @@ footer p { margin: 4px 0 }
 <p><cite>El mito del pastel entero</cite> (Taller 3) · Pinkas Flint, <cite>La negociación empresarial</cite> (ESAN, 2004) · <cite>¿Cómo negocian los colombianos?</cite> (crucigrama).</p>
 </footer>
 </div>
+<script>
+const map = document.querySelector('.map');
+const hub = map.querySelector('.hub');
+const canvas = map.querySelector('.map-links');
+const context = canvas.getContext('2d');
+const branches = Array.from(map.querySelectorAll('.branch'));
+const toggleAll = document.querySelector('.map-tools button');
+toggleAll.parentElement.hidden = false;
+const motion = matchMedia('(prefers-reduced-motion: reduce)');
+const desktop = matchMedia('(min-width: 731px)');
+const finePointer = matchMedia('(hover: hover) and (pointer: fine)');
+let active = null;
+let frame = null;
+
+function updateButton() {
+  const allOpen = branches.every(branch => branch.open);
+  toggleAll.textContent = allOpen ? 'Cerrar todas las ramas' : 'Abrir todas las ramas';
+}
+
+toggleAll.addEventListener('click', () => {
+  const shouldOpen = branches.some(branch => !branch.open);
+  for (const branch of branches) branch.open = shouldOpen;
+  updateButton();
+  scheduleDraw();
+});
+
+function scheduleDraw() {
+  if (context && frame === null) frame = requestAnimationFrame(draw);
+}
+
+function draw(time) {
+  frame = null;
+  const bounds = map.getBoundingClientRect();
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+  const width = Math.round(bounds.width * ratio);
+  const height = Math.round(bounds.height * ratio);
+  if (canvas.width !== width || canvas.height !== height) {
+    canvas.width = width;
+    canvas.height = height;
+  }
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+  context.clearRect(0, 0, bounds.width, bounds.height);
+
+  const center = hub.getBoundingClientRect();
+  for (const [index, branch] of branches.entries()) {
+    const label = branch.querySelector('summary').getBoundingClientRect();
+    const above = index < 3;
+    const x0 = (desktop.matches
+      ? center.left + center.width * (.2 + (index % 3) * .3)
+      : center.left + 5) - bounds.left;
+    const y0 = (desktop.matches ? (above ? center.top : center.bottom) : center.bottom) - bounds.top;
+    const x3 = (desktop.matches ? label.left + label.width / 2 : label.left) - bounds.left;
+    const y3 = (desktop.matches ? (above ? label.bottom : label.top) : label.top + label.height / 2) - bounds.top;
+    const bend = (y3 - y0) * .63;
+    const x1 = desktop.matches ? x0 + 22 : 11 + index * 1.6;
+    const x2 = desktop.matches ? x3 - 22 : x1;
+    const y1 = desktop.matches ? y0 + bend : y0 + 14;
+    const y2 = desktop.matches ? y3 - bend : y3;
+    const highlighted = branch === active || branch.open;
+
+    context.beginPath();
+    context.moveTo(x0, y0);
+    context.bezierCurveTo(x1, y1, x2, y2, x3, y3);
+    context.strokeStyle = getComputedStyle(branch).getPropertyValue('--edge').trim();
+    context.globalAlpha = highlighted ? .88 : .34;
+    context.lineWidth = highlighted ? 2.7 : 1.5;
+    context.stroke();
+
+    if (branch === active && !motion.matches) {
+      const t = (time % 1650) / 1650;
+      const u = 1 - t;
+      const curve = (a, b, c, d) => u ** 3 * a + 3 * u ** 2 * t * b + 3 * u * t ** 2 * c + t ** 3 * d;
+      context.beginPath();
+      context.arc(curve(x0, x1, x2, x3), curve(y0, y1, y2, y3), 4, 0, 2 * Math.PI);
+      context.fillStyle = context.strokeStyle;
+      context.fill();
+      scheduleDraw();
+    }
+  }
+}
+
+for (const branch of branches) {
+  const label = branch.querySelector('summary');
+  const highlight = () => { active = branch; scheduleDraw(); };
+  const clear = () => {
+    if (active === branch) active = null;
+    branch.style.removeProperty('--tilt-x');
+    branch.style.removeProperty('--tilt-y');
+    scheduleDraw();
+  };
+  label.addEventListener('pointerenter', highlight);
+  label.addEventListener('pointerleave', clear);
+  label.addEventListener('focus', highlight);
+  label.addEventListener('blur', clear);
+  label.addEventListener('pointermove', event => {
+    if (motion.matches || !finePointer.matches) return;
+    const rect = label.getBoundingClientRect();
+    branch.style.setProperty('--tilt-x', `${(0.5 - (event.clientY - rect.top) / rect.height) * 10}deg`);
+    branch.style.setProperty('--tilt-y', `${((event.clientX - rect.left) / rect.width - 0.5) * 12}deg`);
+  });
+  branch.addEventListener('toggle', () => {
+    updateButton();
+    scheduleDraw();
+  });
+}
+
+new ResizeObserver(scheduleDraw).observe(map);
+motion.addEventListener('change', scheduleDraw);
+updateButton();
+scheduleDraw();
+</script>
 </body>
 </html>
